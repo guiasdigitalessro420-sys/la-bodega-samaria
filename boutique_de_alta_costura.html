@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M A I S O N | Haute Couture & Ready-to-Wear</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for minimal icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            black: '#0a0a0a',
+                            light: '#f9f9f9',
+                            gray: '#737373',
+                            border: '#e5e5e5'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: #0a0a0a;
+            overflow-x: hidden;
+        }
+        /* Custom smooth scroll and scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cccccc;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #999999;
+        }
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-white text-brand-black antialiased selection:bg-brand-black selection:text-white flex flex-col min-h-screen">
+
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-brand-border transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3">
+                <a href="#" class="text-xl sm:text-2xl font-light tracking-[0.25em] uppercase hover:opacity-75 transition-opacity">
+                    M A I S O N
+                </a>
+            </div>
+
+            <!-- Navigation Links / Desktop -->
+            <nav class="hidden md:flex items-center space-x-8 text-xs font-medium tracking-widest uppercase">
+                <a href="#catalogo" class="hover:text-brand-gray transition-colors">Colección</a>
+                <a href="#experiencia" class="hover:text-brand-gray transition-colors">La Maison</a>
+                <a href="#contacto" class="hover:text-brand-gray transition-colors">Concierge</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleAdminModal(true)" class="text-xs uppercase tracking-widest border border-brand-black px-4 py-2 hover:bg-brand-black hover:text-white transition-all duration-300 flex items-center space-x-2">
+                    <i class="fa-regular fa-user"></i>
+                    <span class="hidden sm:inline">Admin Panel</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="relative bg-brand-light py-20 sm:py-32 border-b border-brand-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <span class="text-xs font-semibold tracking-[0.3em] uppercase text-brand-gray mb-4 block">Colección Primavera / Verano</span>
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-light tracking-tight max-w-3xl mx-auto leading-tight mb-6">
+                Elegancia Minimalista & Alta Costura Contemporánea
+            </h1>
+            <p class="text-brand-gray text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed mb-8">
+                Siluetas depuradas, materiales nobles y confección artesanal diseñadas para trascender las tendencias efímeras.
+            </p>
+            <div class="flex justify-center items-center space-x-4">
+                <a href="#catalogo" class="bg-brand-black text-white px-8 py-3.5 text-xs font-medium tracking-widest uppercase hover:bg-neutral-800 transition-colors">
+                    Explorar Catálogo
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <main id="catalogo" class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 w-full">
+        <div class="flex flex-col md:flex-row justify-between items-baseline mb-12 border-b border-brand-border pb-6">
+            <div>
+                <h2 class="text-xl sm:text-2xl font-light tracking-widest uppercase">Catálogo Actual</h2>
+                <p class="text-xs text-brand-gray tracking-wider mt-1">Piezas exclusivas disponibles para reserva inmediata vía WhatsApp</p>
+            </div>
+            <div class="mt-4 md:mt-0 text-xs text-brand-gray font-medium tracking-wider" id="product-count">
+                Mostrando productos
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
+            <!-- Dynamic products injected via JS -->
+        </div>
+
+        <!-- Empty state -->
+        <div id="empty-state" class="hidden text-center py-24">
+            <i class="fa-solid fa-box-open text-4xl text-brand-gray mb-4 font-light"></i>
+            <p class="text-brand-gray text-sm tracking-widest uppercase">No hay productos disponibles en este momento.</p>
+        </div>
+    </main>
+
+    <footer class="bg-brand-black text-white py-16 border-t border-brand-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div>
+                <h3 class="text-sm font-semibold tracking-[0.2em] uppercase mb-4">M A I S O N</h3>
+                <p class="text-neutral-400 text-xs leading-relaxed font-light">
+                    Boutique de alta costura contemporánea. Estética depurada y atención personalizada para clientes exclusivos.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-xs font-semibold tracking-[0.2em] uppercase mb-4">Atención Concierge</h4>
+                <p class="text-neutral-400 text-xs leading-relaxed font-light mb-2">
+                    Línea de atención directa WhatsApp: <br><strong class="text-white">+57 300 468 3264</strong>
+                </p>
+                <p class="text-neutral-400 text-xs font-light">Bogotá, Colombia.</p>
+            </div>
+            <div>
+                <h4 class="text-xs font-semibold tracking-[0.2em] uppercase mb-4">Newsletter</h4>
+                <p class="text-neutral-400 text-xs leading-relaxed font-light mb-4">Suscríbete para recibir acceso anticipado a nuevas colecciones privadas.</p>
+                <div class="flex">
+                    <input type="email" placeholder="Tu correo electrónico" class="bg-neutral-900 border border-neutral-700 text-xs px-4 py-3 text-white focus:outline-none focus:border-white w-full">
+                    <button onclick="showToast('Suscripción registrada con éxito.')" class="bg-white text-black px-6 text-xs uppercase tracking-widest font-medium hover:bg-neutral-200 transition-colors">Unirse</button>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-neutral-900 text-center text-xs text-neutral-500 font-light">
+            &copy; 2026 MAISON Haute Couture. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <div id="admin-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-none shadow-2xl border border-brand-border fade-in flex flex-col">
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-brand-border flex justify-between items-center bg-brand-light">
+                <div>
+                    <h3 class="text-base font-medium tracking-widest uppercase">Panel de Administración</h3>
+                    <p class="text-xs text-brand-gray">Gestión de catálogo y publicaciones en tiempo real</p>
+                </div>
+                <button onclick="toggleAdminModal(false)" class="text-brand-black hover:text-brand-gray p-2 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <!-- Add Product Form -->
+                <div class="bg-brand-light p-6 border border-brand-border">
+                    <h4 class="text-xs font-semibold tracking-[0.2em] uppercase mb-6 pb-2 border-b border-brand-border">Añadir Nueva Pieza</h4>
+                    <form id="product-form" onsubmit="handleAddProduct(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider mb-1 text-brand-gray">Título del Producto</label>
+                            <input type="text" id="prod-title" required placeholder="Ej. Blazer de Lino Estructurado" class="w-full bg-white border border-brand-border px-4 py-3 text-xs focus:outline-none focus:border-brand-black">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider mb-1 text-brand-gray">Precio ($ COP)</label>
+                            <input type="number" id="prod-price" required min="0" placeholder="Ej. 450000" class="w-full bg-white border border-brand-border px-4 py-3 text-xs focus:outline-none focus:border-brand-black">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider mb-1 text-brand-gray">URL de Imagen Externa (Amazon / Unsplash)</label>
+                            <input type="url" id="prod-image" required placeholder="https://images.unsplash.com/..." class="w-full bg-white border border-brand-border px-4 py-3 text-xs focus:outline-none focus:border-brand-black">
+                        </div>
+                        <button type="submit" class="w-full bg-brand-black text-white py-3.5 text-xs font-medium tracking-widest uppercase hover:bg-neutral-800 transition-colors mt-2">
+                            Publicar en Catálogo
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Product Management List -->
+                <div class="flex flex-col">
+                    <h4 class="text-xs font-semibold tracking-[0.2em] uppercase mb-6 pb-2 border-b border-brand-border">Inventario Actual (<span id="admin-count">0</span>)</h4>
+                    <div id="admin-product-list" class="space-y-3 overflow-y-auto max-h-[350px] pr-2">
+                        <!-- Admin item list injected dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 bg-brand-light border-t border-brand-border text-right">
+                <button onclick="toggleAdminModal(false)" class="bg-brand-black text-white px-6 py-2.5 text-xs font-medium tracking-widest uppercase hover:bg-neutral-800 transition-colors">
+                    Cerrar Panel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-brand-black text-white text-xs px-6 py-3 tracking-widest uppercase shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        Notificación
+    </div>
+
+    <script>
+        // Configured WhatsApp Sales Number
+        const WHATSAPP_NUMBER = "573004683264";
+
+        // Default initial sample products
+        const DEFAULT_PRODUCTS = [
+            {
+                id: "prod-1",
+                title: "Abrigo de Cachemira Oversize",
+                price: 890000,
+                image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: "prod-2",
+                title: "Vestido Midi de Seda Natural",
+                price: 650000,
+                image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: "prod-3",
+                title: "Traje Sartorial de Lino Pura",
+                price: 980000,
+                image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80"
+            }
+        ];
+
+        // Retrieve products from localStorage or initialize with defaults
+        function getProducts() {
+            const stored = localStorage.getItem("maison_products");
+            if (!stored) {
+                localStorage.setItem("maison_products", JSON.stringify(DEFAULT_PRODUCTS));
+                return DEFAULT_PRODUCTS;
+            }
+            try {
+                return JSON.parse(stored);
+            } catch (e) {
+                return DEFAULT_PRODUCTS;
+            }
+        }
+
+        // Save products array to localStorage
+        function saveProducts(products) {
+            localStorage.setItem("maison_products", JSON.stringify(products));
+        }
+
+        // Format number to COP currency
+        function formatCOP(amount) {
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Render main catalog grid and admin product list
+        function renderApp() {
+            const products = getProducts();
+            const grid = document.getElementById("product-grid");
+            const emptyState = document.getElementById("empty-state");
+            const productCount = document.getElementById("product-count");
+            const adminList = document.getElementById("admin-product-list");
+            const adminCount = document.getElementById("admin-count");
+
+            // Update counters
+            productCount.innerText = `Mostrando ${products.length} ${products.length === 1 ? 'pieza' : 'piezas'}`;
+            adminCount.innerText = products.length;
+
+            // Render Catalog Grid
+            if (products.length === 0) {
+                grid.innerHTML = "";
+                emptyState.classList.remove("hidden");
+            } else {
+                emptyState.classList.add("hidden");
+                grid.innerHTML = products.map(p => `
+                    <div class="group flex flex-col bg-white border border-brand-border overflow-hidden transition-all duration-300 hover:shadow-lg">
+                        <div class="relative aspect-[3/4] overflow-hidden bg-brand-light">
+                            <img src="${p.image}" alt="${p.title}" onerror="this.src='https://placehold.co/600x800/f9f9f9/0a0a0a?text=Maison+Haute+Couture'" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700">
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow justify-between bg-white">
+                            <div>
+                                <h3 class="text-xs uppercase tracking-[0.15em] font-medium text-brand-black mb-2">${escapeHtml(p.title)}</h3>
+                                <p class="text-sm font-semibold tracking-wider text-brand-black mb-6">${formatCOP(p.price)}</p>
+                            </div>
+                            <button onclick="orderWhatsApp('${escapeHtml(p.title)}', '${p.price}')" class="w-full bg-brand-black text-white py-3 text-xs font-medium tracking-widest uppercase hover:bg-neutral-800 transition-colors flex items-center justify-center space-x-2">
+                                <i class="fa-brands fa-whatsapp text-sm"></i>
+                                <span>Pedir por WhatsApp</span>
+                            </button>
+                        </div>
+                    </div>
+                `).join("");
+            }
+
+            // Render Admin List
+            if (products.length === 0) {
+                adminList.innerHTML = `<p class="text-xs text-brand-gray text-center py-6">No hay elementos registrados.</p>`;
+            } else {
+                adminList.innerHTML = products.map(p => `
+                    <div class="flex items-center justify-between p-3 bg-white border border-brand-border text-xs">
+                        <div class="flex items-center space-x-3 overflow-hidden">
+                            <img src="${p.image}" onerror="this.src='https://placehold.co/100x100/f9f9f9/0a0a0a?text=Item'" class="w-10 h-10 object-cover flex-shrink-0">
+                            <div class="truncate">
+                                <p class="font-medium truncate">${escapeHtml(p.title)}</p>
+                                <p class="text-brand-gray">${formatCOP(p.price)}</p>
+                            </div>
+                        </div>
+                        <button onclick="deleteProduct('${p.id}')" class="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-3 py-2 transition-colors flex-shrink-0 ml-2" title="Eliminar producto">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `).join("");
+            }
+        }
+
+        // Handle order generation via WhatsApp
+        function orderWhatsApp(title, price) {
+            const formattedPrice = formatCOP(price);
+            const message = `Hola, estoy interesado en comprar: ${title} por un valor de ${formattedPrice}. ¿Está disponible?`;
+            const encodedMessage = encodeURIComponent(message);
+            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+            window.open(url, '_blank');
+        }
+
+        // Add new product from Admin Form
+        function handleAddProduct(e) {
+            e.preventDefault();
+            const title = document.getElementById("prod-title").value.trim();
+            const price = parseFloat(document.getElementById("prod-price").value);
+            const image = document.getElementById("prod-image").value.trim();
+
+            if (!title || isNaN(price) || !image) {
+                showToast("Por favor complete todos los campos correctamente.");
+                return;
+            }
+
+            const newProduct = {
+                id: 'prod-' + Date.now(),
+                title: title,
+                price: price,
+                image: image
+            };
+
+            const products = getProducts();
+            products.unshift(newProduct);
+            saveProducts(products);
+
+            // Reset form
+            document.getElementById("product-form").reset();
+            renderApp();
+            showToast("Pieza publicada con éxito en el catálogo.");
+        }
+
+        // Delete product by id
+        function deleteProduct(id) {
+            let products = getProducts();
+            products = products.filter(p => p.id !== id);
+            saveProducts(products);
+            renderApp();
+            showToast("Pieza eliminada del catálogo.");
+        }
+
+        // Toggle admin modal visibility
+        function toggleAdminModal(show) {
+            const modal = document.getElementById("admin-modal");
+            if (show) {
+                modal.classList.remove("hidden");
+                document.body.style.overflow = 'hidden';
+            } else {
+                modal.classList.add("hidden");
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Toast notification helper
+        function showToast(text) {
+            const toast = document.getElementById("toast");
+            toast.innerText = text;
+            toast.classList.remove("translate-y-20", "opacity-0");
+            toast.classList.add("translate-y-0", "opacity-100");
+            setTimeout(() => {
+                toast.classList.remove("translate-y-0", "opacity-100");
+                toast.classList.add("translate-y-20", "opacity-0");
+            }, 3000);
+        }
+
+        // Security escape helper
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        // Initialize application on window load
+        window.onload = function() {
+            renderApp();
+        };
+    </script>
+</body>
+</html>
